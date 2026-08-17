@@ -1,0 +1,21 @@
+[package]
+name = "mogwai-md-demo"
+description = "A trunk-servable demo of mogwai-md"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+path = "src/lib.rs"
+
+[dependencies]
+mogwai-md = { path = "../../crates/mogwai-md" }
+mogwai.workspace = true
+log.workspace = true
+console_log.workspace = true
+console_error_panic_hook.workspace = true
+wasm-bindgen.workspace = true
+wasm-bindgen-futures.workspace = true
+web-sys.workspace = true

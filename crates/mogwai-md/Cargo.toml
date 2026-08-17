@@ -1,0 +1,26 @@
+[package]
+name = "mogwai-md"
+description = "A markdown rendering widget for mogwai"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+crate-type = ["rlib"]
+
+[features]
+default = []
+wasm-test = ["dep:wasm-bindgen-test", "dep:console_log", "dep:console_error_panic_hook"]
+
+[dependencies]
+mogwai.workspace = true
+pulldown-cmark.workspace = true
+log.workspace = true
+wasm-bindgen-test = { workspace = true, optional = true }
+console_log = { workspace = true, optional = true }
+console_error_panic_hook = { workspace = true, optional = true }
+
+[dev-dependencies]
+wasm-bindgen.workspace = true
+web-sys.workspace = true
