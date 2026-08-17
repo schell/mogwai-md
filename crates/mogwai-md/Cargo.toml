@@ -5,6 +5,19 @@ edition.workspace = true
 version.workspace = true
 license.workspace = true
 authors.workspace = true
+repository = "https://github.com/schell/mogwai-md"
+homepage = "https://github.com/schell/mogwai-md"
+documentation = "https://docs.rs/mogwai-md"
+readme = "../../README.md"
+keywords = ["markdown", "mogwai", "wasm", "dom", "pulldown"]
+categories = ["gui", "web-programming", "text-processing"]
+include = [
+    "src/**/*.rs",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+]
 
 [lib]
 crate-type = ["rlib"]
