@@ -295,7 +295,12 @@ impl<V: View> Walker<V> {
         if let Some(parent) = self.current() {
             parent.append_child(&hr);
         } else {
-            self.push_block(hr);
+            // `<hr>` is a void element — it must never be pushed onto the
+            // stack (there is no matching `TagEnd::Rule`, so it would never
+            // be popped and every subsequent block would nest inside it,
+            // inheriting the hr's UA styles). Promote it straight to
+            // top-level instead.
+            self.top_level.push(hr);
         }
     }
 
@@ -460,6 +465,27 @@ mod test {
     fn horizontal_rule() {
         let html = render("---\n");
         assert!(html.contains("<hr"));
+    }
+
+    #[test]
+    fn content_after_horizontal_rule_is_not_nested() {
+        // Regression: `Event::Rule` must not leave the `<hr>` on the
+        // walker's open-element stack. If it does, the paragraph below
+        // becomes a child of the `<hr>`, inheriting its UA styles
+        // (gray/half-transparent) in the browser, and SSR emits a
+        // malformed `<hr><p>below</p></hr>`.
+        let html = render("above\n\n---\n\nbelow\n");
+        assert!(html.contains("<hr />"));
+        assert!(html.contains("<p>above</p>"));
+        assert!(html.contains("<p>below</p>"));
+        assert!(
+            !html.contains("<hr><p>below</p>"),
+            "below must not nest inside <hr>, got: {html}"
+        );
+        assert!(
+            !html.contains("<hr /><p>below</p></hr>"),
+            "<hr> must be self-closing, got: {html}"
+        );
     }
 
     #[test]
