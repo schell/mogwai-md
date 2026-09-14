@@ -433,6 +433,17 @@ mod test {
     }
 
     #[test]
+    fn link_fragment_is_in_page() {
+        // In-app fragment links (`#beads/{id}` and friends) navigate the
+        // current page — the host's hash routing handles them — so they
+        // must never get the external-link treatment.
+        let html = render("[bead](#beads/schell-l83)");
+        assert!(html.contains(r##"href="#beads/schell-l83""##));
+        assert!(!html.contains("target="));
+        assert!(!html.contains("rel="));
+    }
+
+    #[test]
     fn unordered_list() {
         let html = render("- one\n- two\n");
         assert!(html.contains("<ul>"));
